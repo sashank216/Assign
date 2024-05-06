@@ -1,0 +1,57 @@
+**Tables LFA1.
+**PARAMETERS p_lfa1 type lfa1-lifnr.
+**data :  "customer
+* *      lv_name1 Type lfa1-name1, "Name 1
+* *  lv_ort01 Type lfa1-ort01, "city
+*   * lv_land1 Type lfa1-land1. "country
+**select LIFNR name1 ort01 land1
+*  * into (p_lfa1, lv_name1, lv_ort01, lv_land1)
+*  * from LFA1
+*  * where LIFNR = p_lfa1.
+* * WRITE: / p_lfa1, lv_name1, lv_ort01, lv_land1.
+*
+*
+* *ENDSELECT.
+
+* Tables mara.
+* PARAMETERS p_mara type matnr.
+* data:
+** data : lv_matnr type mara-matnr, "Customer
+*        lv_aenam type mara-aenam, "name
+*        lv_laeda type mara-laeda, "city
+*        lv_vpsta type mara-vpsta. "country
+*select  matnr aenam laeda vpsta
+*  into (p_mara, lv_aenam,lv_laeda,lv_vpsta)
+*  from mara
+*  where matnr = p_mara.
+*  write: / p_mara, lv_aenam, lv_laeda,lv_vpsta.
+* endselect.
+
+*Tables ZVISHNU_280354.
+*Data:
+*     lv_empid type ZVISHNU_280354-empid,
+*     lv_empname type ZVISHNU_280354-empname,
+*     lv_emp_salary type ZVISHNU_280354-emp_salary.
+*
+*SELECT empid empname emp_salary
+*  into (lv_empid, lv_empname, lv_emp_salary)
+*  from ZVISHNU_280354
+*  where empid = '16'.
+*  write:/ lv_empid, lv_empname, lv_emp_salary.
+*  ENDSELECT.
+
+
+
+
+TABLES ZVISHNU_280354.
+PARAMETERS p_empid TYPE ZVISHNU_280354-empid.
+Data:
+      lv_empname type ZVISHNU_280354-empname,
+      lv_emp_salary type ZVISHNU_280354-emp_salary.
+
+      SELECT empid empname emp_salary
+       into (p_empid, lv_empname, lv_emp_salary)
+        from ZVISHNU_280354
+        where empid = p_empid.
+        write:/ p_empid, lv_empname, lv_emp_salary.
+        ENDSELECT.

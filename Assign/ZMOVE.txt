@@ -1,0 +1,15 @@
+REPORT ZMOVE.
+*Data:
+*    Begin of B1,
+*  Empid type i value 30 ,
+*      empname(20) type c value 'ust',
+*       end of B1.
+*
+* Data:
+*       Begin of b2,
+*         empid type i,
+*         empname(20) type c ,
+*
+*         end of b2.
+*        move-CORRESPONDING b1 to b2.
+*        write: / b2-empname,b2-empid.

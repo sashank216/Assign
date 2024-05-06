@@ -1,0 +1,62 @@
+REPORT ZYRF NO STANDARD PAGE HEADING LINE-COUNT 20(3)
+MESSAGE-ID zmsgid.
+
+
+
+include ZYRF_sf01_top.
+
+select-options s_matnr for wa_tb-matnr.
+
+
+START-OF-SELECTION.
+PERFORM start_mm.
+end-of-SELECTION.
+PERFORM end_mm.
+
+SELECT single matnr
+  into wa_tb-matnr
+  from mara
+  where mara~matnr in s_matnr.
+
+if sy-subrc eq 0.
+  message s001.
+ else.
+  message e004.
+  ENDIF.
+
+
+*&---------------------------------------------------------------------*
+*& Form start_mm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM start_mm .
+  select mara~matnr mara~mbrsh mara~mtart mara~meins mara~matkl makt~maktx
+  into table lt_tb
+  from mara
+  inner join makt on mara~matnr = makt~matnr
+  where mara~matnr in s_matnr.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form end_mm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM end_mm .
+loop at lt_tb into wa_tb.
+  write:/ wa_tb-MATNR, "material number
+       wa_tb-MBRSH,    "industry
+       wa_tb-MTART,   "material type
+       wa_tb-MEINS,   "unit of meausre
+       wa_tb-MATKL,   "material grouo
+       wa_tb-MAKTX.   " maternial descriptio
+  ENDLOOP.
+ENDFORM.

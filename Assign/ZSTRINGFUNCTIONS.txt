@@ -1,0 +1,61 @@
+REPORT ZSTRINGFUNCTIONS.
+* #1 upper case to lower case vice versa
+
+* PARAMETERS p_a(20).
+* Translate p_a to UPPER CASE.
+* write p_a.
+
+*PARAMETERS  p_a(20).
+*TRANSLATE p_a to LOWER CASE.
+*write p_a.
+
+* #2 Concatenate
+
+*PARAMETERS:P_A(20),
+*           P_b(30),
+*           p_del.
+*
+*Data lv_dest(30) type c.
+*
+**CONCATENATE p_a p_b into lv_dest.
+**CONCATENATE p_a p_b into lv_dest SEPARATED BY '^'.
+**CONCATENATE p_a p_b into lv_dest SEPARATED BY space.
+*CONCATENATE p_a p_b INTO lv_dest SEPARATED BY p_del.
+*write lv_dest.
+
+* # Split
+
+*PARAMETERS p_src(20).
+*data: lv_a(10), lv_b(10).
+*split p_src at ',' into lv_a lv_b.
+*write: / lv_a, lv_b.
+
+* # 4 offsetting
+
+*PARAMETERS p_src(20).
+*data lv_a(20).
+*lv_a = p_src+4(5).
+*write lv_a.
+
+* 5 Strelen
+
+*Parameters p_src(20).
+*data lv_str type i.
+*lv_str = strlen( p_src ).
+*write lv_str.
+
+* #6 Replace
+
+*PARAMETERS p_src(20).
+*
+*if p_src ca ','.
+*  REPLACE ',' with '$' into p_src.
+*  else.
+*    exit.
+*endif.
+*write p_src.
+
+
+Data lv_input(20).
+CONDENSE lv_input.
+write lv_input.

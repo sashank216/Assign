@@ -1,0 +1,21 @@
+REPORT ZVICE.
+data: lv_tb type vbeln,
+
+      ls_tb type ZTD_35,
+      wa_tb type ZTD_34.
+select-OPTIONS s_vbeln for lv_tb.
+CALL FUNCTION 'ZFUNC_MOD1'
+  EXPORTING
+    l1_vbeln       = s_vbeln-low
+    l2_vbeln       = s_vbeln-high
+  TABLES
+    lt_b           = ls_tb.
+
+loop at ls_tb into wa_tb.
+  WRITE:/ wa_tb-vbeln,
+          wa_tb-erdat,
+          wa_tb-ernam,
+          wa_tb-posnr,
+          wa_tb-matnr,
+          wa_tb-matkl.
+  ENDLOOP.

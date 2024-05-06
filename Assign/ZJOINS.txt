@@ -1,0 +1,121 @@
+REPORT zjoins.
+
+*TYPES: BEGIN OF ls_tab,
+*       VBELN type vbeln,
+*       ERDAT type ERDAT,
+*       ERZET type ERZET,
+*       ERNAM type ERNAM,
+*       ANGDT type ANGDT,
+*      end of ls_tab.
+*Data: lt_tab TYPE STANDARD TABLE OF ls_tab,
+*      wa_tab TYPE ls_tab.
+*Select-OPTIONS s_vbeln for wa_tab-vbeln.
+*
+*Select  VBELN ERDAT ERZET ERNAM ANGDT
+*  into table lt_tab
+*  from vbak
+*  where vbeln in s_vbeln.
+*
+*  if sy-subrc eq 0.
+*    write: / 'sales operation performed', sy-dbcnt.
+*    else.
+*    write: / 'sales operation not performed', sy-dbcnt.
+* endif.
+* end-of-SELECTION.
+*
+*loop at lt_tab into wa_tab.
+*  write: / wa_tab-VBELN,
+*           wa_tab-ERDAT,
+*           wa_tab-ERZET,
+*           wa_tab-ERNAM,
+*           wa_tab-ANGDT.
+*  ENDLOOP.
+
+*Types: BEGIN OF ls_tab,
+*       VBELN type VBELN,
+*       ERDAT type ERDAT,
+*       ERZET type ERZET,
+*       ERNAM type ERZET,
+*
+*       CHARG type Charg,
+*       MATKL type matkl,
+*       ARKTX type ARKTX,
+*
+*
+*
+*
+*  END OF ls_tab.
+* Data: lt_tab type STANDARD TABLE OF ls_tab,
+*       wa_tab type ls_tab.
+*
+* SELECT-OPTIONS s_vbeln for wa_tab-vbeln.
+* START-OF-SELECTION.
+*
+* select vbak~vbeln vbak~erdat vbak~erzet vbak~ernam
+*        vbap~charg vbak~matkl vbak~arktx
+*   into TABLE lt_tab
+*   from vbak
+*   LEFT OUTER JOIN VBAP on
+*   vbak~vbeln = vbap~vbeln
+*   where vbak~vbeln in s_vbeln.
+*  if sy-subrc eq 0.
+*    write: 'sales production is completed', sy-dbcnt.
+*    else.
+*      write: 'sales production is not completed', sy-dbcnt.
+* ENDIF.
+*
+* End-of-SELECTION.
+*
+* LOOP AT lt_tab into wa_tab.
+*   write: /
+*     wa_tab-VBELN,
+*     wa_tab-ERDAT,
+*     wa_tab-ERZET,
+*     wa_tab-ERZET,
+*     wa_tab-Charg,
+*     wa_tab-matkl,
+*     wa_tab-ARKTX.
+*   ENDLOOP.
+
+TYPES: BEGIN OF ls_tab,
+         ZVISSH_EMPID TYPE ZVISSH_EMPID,
+         ZVISSH_EMPNAME   TYPE ZVISSH_EMPNAME,
+         ZVISSH_EMPSALARY TYPE ZVISSH_EMPSALARY,
+        ZKRISHNA_EMPID  TYPE ZKRISHNA_EMPID,
+         ZKRISHNA_EMPNAME   TYPE ZKRISHNA_EMPNAME,
+
+       END OF ls_tab.
+
+DATA:
+  lt_tab TYPE STANDARD TABLE OF ls_tab,
+  wa_tab TYPE ls_tab.
+SELECT-OPTIONS s_EMPID FOR wa_tab-ZVISSH_EMPID.
+
+START-OF-SELECTION.
+  SELECT zvishnu_280354~EMPID
+         zvishnu_280354~EMPNAME
+         zvishnu_280354~EMP_SALARY
+         zkrishna_2565310~EMP_ID
+         zkrishna_2565310~EMP_NAME
+
+    INTO TABLE lt_tab
+    FROM zvishnu_280354
+    INNER JOIN zkrishna_2565310 ON
+    zvishnu_280354~EMPID = zkrishna_2565310~EMP_ID
+  WHERE zvishnu_280354~EMPid IN s_EMPID.
+
+  IF sy-subrc EQ 0.
+    WRITE: 'sap productions completed', sy-dbcnt.
+  ELSE.
+    WRITE: 'sap productions not completed', sy-dbcnt.
+  ENDIF.
+
+END-OF-SELECTION.
+  LOOP AT lt_tab INTO wa_tab.
+    WRITE:/ wa_tab-EMPID,
+            wa_tab-EMPNAME,
+            wa_tab-EMP_SALARY,
+            wa_tab-EMP_ID,
+            wa_tab-EMPN_AME.
+
+    endloop.

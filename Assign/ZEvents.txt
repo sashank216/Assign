@@ -1,0 +1,126 @@
+REPORT ZVIS_NEW_EVENTS NO STANDARD PAGE HEADING LINE-COUNT 20(3)
+MESSAGE-ID z_vis_new_msg_id.
+
+INCLUDE z_vis_newinclude.
+
+SELECTION-SCREEN : BEGIN OF BLOCK B2 WITH FRAME TITLE TEXT-002.
+
+
+select-OPTIONS s_matnr for wa_tb-matnr OBLIGATORY.
+
+SELECTION-SCREEN : END OF BLOCK B2.
+SELECTION-SCREEN : BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-001.
+
+PARAMETERS p_mtart type mtart OBLIGATORY.
+.
+
+SELECTION-SCREEN : end of BLOCK b1.
+
+SELECTION-SCREEN : Begin of block b3 with frame TITLE text-003.
+
+  PARAMETERS : R1 RADIOBUTTON GROUP RAD1,
+               R2 RADIOBUTTON GROUP RAD1,
+               R3 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+
+  SELECTION-SCREEN ULINE /10(60).
+  SELECTION-SCREEN COMMENT /60(70) lv_comm1.
+  SELECTION-SCREEN SKIP 3.
+  SELECTION-SCREEN ULINE.
+
+  SELECTION-SCREEN : END OF BLOCK B3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+INITIALIZATION.
+*clear: wa_tb, lt_tb.
+*s_matnr-low = '1'.
+*s_matnr-high = '100'.
+*append s_matnr.
+*at SELECTION-SCREEN on s_matnr.
+
+lv_comm1 = 'UST EMPLOYEE'.
+
+SELECTION-SCREEN : BEGIN OF BLOCK B4 WITH FRAME Title Text-004.
+
+  PARAMETERS : C1 AS CHECKBOX,
+               C2 AS CHECKBOX DEFAULT 'X'.
+ SELECTION-SCREEN : END OF BLOCK B4.
+
+
+ LOOP AT s_matnr.
+  ULINE.
+WRITE : 'Mat Low :' , s_matnr-low,
+        'Mat High :' , s_matnr-high,
+        'Range Sign :' , s_matnr-sign,
+        'Range Options :' , s_matnr-option.
+ULINE.
+  ENDLOOP.
+
+
+
+select single matnr
+  into wa_tb-matnr
+  from mara
+  where matnr in s_matnr.
+
+ IF sy-subrc eq 0.
+   MESSAGE s001.
+ ELSE.
+   MESSAGE e000.
+
+ ENDIF.
+
+ START-OF-SELECTION.
+ PERFORM get_data-events.
+ END-OF-SELECTION.
+ PERFORM got_data-events.
+*&---------------------------------------------------------------------*
+*& Form get_data-events
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_data-events .
+
+  SELECT MATNR
+       ERSDA
+       ERNAM
+       LAEDA
+       AENAM
+    into table lt_tb
+    from mara
+    WHERE matnr in s_matnr.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form got_data-events
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM got_data-events .
+
+  LOOP AT lt_tb into wa_tb.
+    write:/ wa_tb-MATNR,
+       wa_tb-ERSDA,
+       wa_tb-ERNAM,
+       wa_tb-LAEDA,
+       wa_tb-AENAM.
+
+  ENDLOOP.
+
+ENDFORM.

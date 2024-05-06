@@ -1,0 +1,58 @@
+REPORT zdo.
+*Do 10 times.
+*  uline.
+*  write 'sap'.
+*  enddo.
+
+*Do.
+*  write 'sy-index'.
+*  uline.
+*  if sy-index eq 10.
+*    stop.
+*   endif.
+*enddo.
+*write 'sap'.
+
+*Do.
+*  write 'sy-index'.
+*  if sy-index eq 2.
+*    exit.
+*  endif.
+*  write 'sap'.
+*  if sy-index eq 10.
+*    exit.
+*   endif.
+*  enddo.
+*  write 'sap'.
+*Do.
+*  write 'sy-index'.
+*  if sy-index eq 10.
+*    continue.
+*   endif.
+*  check sy-index eq 10.
+*  continue.
+*  enddo.
+*  write 'sy-index'.
+*Do 10 times.
+*  write 'sap'.
+*  enddo.
+
+*Do.
+*  if sy-index = 10.
+*    write 'sap'.
+*   stop.
+*
+*      endif.
+*      write 'abap'.
+*    enddo.
+
+
+Do.
+  if sy-index eq 20.
+    CONTINUE.
+
+    endif.
+    check sy-index eq 20.
+    exit.
+
+    enddo.

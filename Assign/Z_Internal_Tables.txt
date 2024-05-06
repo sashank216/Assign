@@ -1,0 +1,255 @@
+REPORT z_vis_internaltables.
+
+*DATA: Begin of line,
+*col_1(20) type c,
+*col_2(20) type c,
+*END OF line.
+*
+*DATA I_tab LIKE TABLE OF Line.
+*
+*Line-col_1 = 'UST'.
+*Line-col_2 = 'Technologies'.
+*append line to i_tab.
+*clear line.
+*
+*Refresh i_tab.
+*if i_tab is INITIAL.
+*  write 'table is empty'.
+*  FREE i_tab.
+*  ENDIF.
+
+** #2 Insert Table
+*DATa : Begin of line,
+*       name(20) type c,
+*       age type i,
+*       salary type i,
+*       land(20) type c,
+*  end of line.
+*
+**TYPES : BEGIN OF line,
+**          name(20) TYPE c,
+**          age      TYPE i,
+**          salary   TYPE i,
+**          land(20) TYPE c,
+**        END OF line.
+*
+*DATA i_tab LIKE SORTED TABLE OF line WITH NON-UNIQUE KEY name age salary land.
+**DATA i_tab LIKE STANDARD TABLE OF line WITH NON-UNIQUE KEY name age salary land.
+*
+*Line-name = 'Vishnu'.
+*Line-age = 22.
+*Line-salary = 425000.
+*Line-land = 'Hyderabad'.
+*INSERT line INTO table i_tab.
+*
+*Line-name = 'Sathwik'.
+*Line-age = 23.
+*Line-salary = 1200000.
+*Line-land = 'Bengaluru'.
+*INSERT line INTO table i_tab.
+*
+*Line-name = 'Sashank'.
+*Line-age = 25.
+*Line-salary = 2400000.
+*Line-land = 'Mumbai'.
+*
+*INSERT line INTO table i_tab.
+*
+**SORT i_tab BY name.
+*
+*LOOP AT i_tab INTO line.
+*  WRITE:/ line-name, line-age, line-salary, line-land.
+*
+*ENDLOOP.
+
+
+**# 3 Insert Line
+
+*Data: Begin of line,
+*  col_1 type i,
+*  col_2 type i,
+*end of line.
+*
+*Data i_tab LIKE TABLE OF Line.
+*
+*DO 2 TIMES.
+*   Line-col_1 = sy-index.
+*   Line-col_2 = sy-index ** 20.
+*   append line to i_tab.
+*enddo.
+*
+*LOOP AT i_tab into line.
+*  Line-col_1 = 3 ** sy-tabix.
+*  Line-col_2 = 5 ** sy-tabix.
+*
+*ENDLOOP.
+*
+*LOOP AT i_tab into line.
+*  write:/ sy-tabix,Line-col_1, Line-col_2.
+*
+*ENDLOOP.
+
+* MODIFY
+*Data: Begin of line,
+*      col_1 type i,
+*      col_2 type i,
+*  end of line.
+*
+*  Data i_tab like TABLE OF line.
+*
+*DO 2 TIMES.
+*  line-col_1 = sy-index.
+*  line-col_2 = sy-index ** 20.
+*
+*  append line to i_tab.
+*
+*
+*ENDDO.
+*
+*
+*LOOP AT i_tab into line.
+*  if sy-tabix eq 2.
+*    line-col_1 = sy-tabix * 10.
+*    line-col_2 = ( sy-tabix * 10 ) ** 2.
+*    MODIFY i_tab from line.
+*    ENDIF.
+*
+
+
+
+
+
+*ENDLOOP.
+*
+*loop at i_tab into line.
+*  write:/ sy-tabix, line-col_1, line-col_2.
+*  ENDLOOP.
+
+*** # Delete
+*Data: Begin of line,
+*      col_1 type i,
+*      col_2 type i,
+*  end of line.
+*
+*  Data i_tb like HASHED TABLE OF line with UNIQUE key col_1.
+*
+* DO 4 TIMES.
+*  line-col_1 = sy-index.
+*  line-col_2 = sy-index ** 2.
+*  insert line into table i_tb.
+*
+* ENDDO.
+*
+* line-col_1 = 1.
+* delete table i_tb: from line,
+* with TABLE KEY col_1 = 3.
+*
+* LOOP AT i_tb into line.
+*     write:/ line-col_1, line-col_2.
+*
+* ENDLOOP.
+** # Collect
+* Data: Begin of line,
+*       col_1(20) type c,
+*       col_2(20) type c,
+*       col_3 type i,
+*
+*   end of line.
+*
+*Data i_tb like SORTED TABLE OF line with NON-UNIQUE key col_1 col_2.
+*
+*line-col_1 = 'ust'.
+*line-col_2 = 'Technologies'.
+*line-col_3 = 2 .
+*
+*COLLECT line into i_tb.
+*write / sy-tabix.
+*
+*Line-col_1 = 'UST'.
+*Line-col_2 = 'Branch'.
+*Line-col_3 = 2.
+*COLLECT line into i_tb.
+*
+*write:/ sy-tabix.
+*LOOP AT i_tb into line.
+*  write:/ line-col_1, line-col_2, line-col_3, sy-tabix.
+*
+*
+*ENDLOOP.
+
+** # Data Types.
+*Types: Begin of tb_student,
+*       name(20) type c,
+*       id type i,
+*  end of tb_student.
+*
+*Data: gt_student type tb_student.
+*Data: it_tb like table of gt_student.
+*
+*gt_student-name = 'Vishnu'.
+*gt_student-id = 34.
+*append gt_student to it_tb.
+*
+*gt_student-name = 'Sashank'.
+*gt_student-id = 11.
+*append gt_student to it_tb.
+*
+*gt_student-name = 'Sathwik'.
+*gt_student-id = 21.
+*append gt_student to it_tb.
+*sort it_tb by id.
+** 1*read table it_tb into gt_student index 3.
+*
+*if sy-subrc eq 0.
+*  write:/ gt_student-name, gt_student-id.
+*else.
+*  write:/ 'No record is found'.
+*  endif.
+
+** #2
+*read table  it_tb into gt_student WITH TABLE KEY name = 'Sashank'.
+*
+*if sy-subrc eq 0.
+*  write:/ gt_student-name, gt_student-id.
+*else.
+*  write: 'No records are availble'.
+*  endif.
+
+
+*Data: f1(20) type c.
+*
+*FIELD-SYMBOLS <fs_ust>.
+*
+*f1 = 'UST'.
+*
+*assign f1 to <fs_ust>.
+*
+*write <fs_ust>.
+
+data: Begin of line,
+      col_1 type i,
+      col_2 type i,
+  end of line.
+
+  data i_tb like SORTED TABLE OF line with unique key col_1.
+
+  FIELD-SYMBOLS <fs_ust> like line of i_tb.
+
+  DO 4 TIMES.
+
+    line-col_1 = sy-index.
+    line-col_2 = 2 * sy-index.
+    append line to i_tb.
+
+  ENDDO.
+
+  LOOP AT i_tb into line.
+
+    write:/ line-col_1, line-col_2.
+
+  ENDLOOP.
+
+read table i_tb assigning <fs_ust> index 2.
+*CLEAR <fs>.
+write:   sy-subrc, sy-tabix.
+write: / <fs_ust>-col_1, <fs_ust>-col_2.

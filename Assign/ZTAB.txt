@@ -1,0 +1,47 @@
+REPORT ZTAB.
+
+*Tables KnA1.
+*
+*Data: lv_kunnr type kunnr,
+*      lv_name1 type name1,
+*      lv_ort01 type ort01,
+*      lv_land1 type land1.
+*
+*SELECT-OPTIONS s_kunnr for lv_kunnr.
+*PARAMETERS p_land1 type kna1-land1.
+*
+*SELECT kunnr name1 ort01 land1
+*  into (lv_kunnr, lv_name1, lv_ort01, lv_land1)
+*  from KnA1
+*  where kunnr in s_kunnr
+*  and land1 eq p_land1.
+*
+* write:/ lv_kunnr, lv_name1, lv_ort01, lv_land1.
+*  ENDSELECT.
+
+
+TABLES kna1.
+
+DATA: lt_tab TYPE kna1 occurs 0 WITH HEADER LINE.
+data lv_kunnr type kunnr.
+SELECT-OPTIONS s_kunnar for lv_kunnr.
+PARAMETERS p_land1 type kna1-land1.
+
+SELECT *
+  into lt_tab
+  from kna1
+  where kunnr in s_kunnar
+  and land1 eq p_land1.
+
+ Append lt_tab to lt_tab.
+  ENDSELECT.
+
+ LOOP AT  lt_tab into lt_tab.
+   write: /
+   lt_tab-kunnr,
+   lt_tab-ort01,
+   lt_tab-name1,
+   lt_tab-land1.
+
+
+ ENDLOOP.
